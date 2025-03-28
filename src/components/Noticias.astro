@@ -1,0 +1,47 @@
+---
+import { getCollection } from "astro:content";
+
+const articulos = await getCollection("articulos");
+---
+
+<section
+    aria-label="Noticias y articulos recomendados sobre la región de Cusco y todo el Perú"
+    class="mx-auto max-w-6xl pt-10"
+>
+    <div class="mx-auto w-full">
+        <div class="grid gap-6 md:grid-cols-2">
+            {
+                articulos.map((articulo) => {
+                    const { slug, data } = articulo;
+                    const { title, img, description, fecha } = data;
+
+                    return (
+                        <article class="">
+                            <a
+                                class="border-1 border-primary p-4 rounded-2xl block w-full h-full transition hover:scale-[102%]"
+                                href={`/${slug}`}
+                            >
+                                <span class="font-medium uppercase mb-4 block text-sm ">
+                                    {fecha}
+                                </span>
+                                <img
+                                    transition:name={`img-${slug}`}
+                                    src={`/${img}`}
+                                    alt={title}
+                                    class="w-full rounded-sm h-64 object-cover"
+                                />
+                                <h3
+                                    transition:name={`title-${slug}`}
+                                    class="text-2xl my-4 font-semibold"
+                                >
+                                    {title}
+                                </h3>
+                                <p class="text-lg">{description}</p>
+                            </a>
+                        </article>
+                    );
+                })
+            }
+        </div>
+    </div>
+</section>

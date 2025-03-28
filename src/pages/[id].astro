@@ -1,0 +1,50 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+
+export async function getStaticPaths() {
+    const articulos = await getCollection("articulos");
+
+    return articulos.map((articulo) => ({
+        params: { id: articulo.slug },
+        props: { articulo },
+    }));
+}
+
+const { articulo } = Astro.props;
+const { data, slug } = articulo;
+const { title, img, description, fecha } = data;
+
+const { Content } = await render(articulo);
+---
+
+<Layout title={`${title} - Articulos y Noticias`}>
+    <main class="mx-auto max-w-5xl flex flex-col justify-center items-center">
+        <h1
+            transition:name={`title-${slug}`}
+            class="text-dark tracking-tight leading-none mb-4 font-medium mt-8"
+        >
+            {title}
+        </h1>
+        <p class="md:prose-xl font-medium mb-8">
+            {description}
+        </p>
+        <img
+            transition:name={`img-${slug}`}
+            class="w-full h-full rounded-3xl aspect-[16/9] my-5"
+            src={`/${img}`}
+            alt={title}
+            decoding="async"
+            fetchpriority="low"
+        />
+        <div class="prose lg:prose-xl">
+            <Content />
+        </div>
+        <p class="my-6 text-lg font-medium">{fecha}</p>
+    </main>
+</Layout>
+<style>
+    h1 {
+        font-size: clamp(2rem, 1.63rem + 1.58vw, 3.5rem);
+    }
+</style>
