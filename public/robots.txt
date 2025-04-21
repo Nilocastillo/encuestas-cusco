@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+#Host
+Host: https://encuestascusco.com/
+
+#Sitemaps
+Sitemap: https://encuestascusco.com/sitemap.xml
